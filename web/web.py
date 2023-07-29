@@ -47,6 +47,8 @@ class Web:
             'log.screen.level': Config.log_level,
             'log.error_file': Config.log_directory + '/web_error.log',
             'log.access_file': Config.log_directory + '/web_access.log',
+            'tools.proxy.on': Config.web_proxy_base is not None,
+            'tools.proxy.base': Config.web_proxy_base,
         })
         logger.debug('Web server config updated.')
 
@@ -59,6 +61,10 @@ class Web:
         cherrypy.engine.block()
 
     @staticmethod
+    def stop():
+        cherrypy.engine.exit()
+
+    @staticmethod
     @cherrypy.tools.register('before_finalize', priority=60)
     def secureheaders():
         logger.debug('Execute secureheaders hook')
@@ -67,4 +73,9 @@ class Web:
         headers['X-Frame-Options'] = 'DENY'
         headers['X-XSS-Protection'] = '1; mode=block'
         if Config.production:
-            headers['Content-Security-Policy'] = "default-src 'self' https;"
+            headers['Content-Security-Policy'] = '''
+                default-src 'self' https;
+                font-src 'self' data: fonts.gstatic.com;
+                style-src 'self' fonts.googleapis.com;
+                img-src 'self' data:;
+            '''
