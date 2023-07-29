@@ -6,6 +6,15 @@ from app.config import Config
 
 from .utils import init_hooks
 
+init_hooks()
+
+# hooks must be initialized before importing controllers
+# pylint: disable=wrong-import-position,wrong-import-order
+
+from app.web.controllers import Root  # noqa: E402
+
+# pylint: enable=wrong-import-position,wrong-import-order
+
 logger = logging.getLogger(__name__)
 
 
@@ -34,14 +43,6 @@ def get_cherrypy_config():
 class Web:
     @staticmethod
     def start():
-        init_hooks()
-
-        # hooks must be initialized before importing controllers
-        # pylint: disable=import-outside-toplevel
-        from app.web.controllers import Root
-
-        # pylint: enable=import-outside-toplevel
-
         logger.info('Starting web server...')
 
         cherrypy.config.update({
