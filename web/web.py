@@ -7,14 +7,6 @@ from app.config import Config
 from .utils import init_hooks
 
 init_hooks()
-
-# hooks must be initialized before importing controllers
-# pylint: disable=wrong-import-position,wrong-import-order
-
-from app.web.controllers import Root  # noqa: E402
-
-# pylint: enable=wrong-import-position,wrong-import-order
-
 logger = logging.getLogger(__name__)
 
 
@@ -42,7 +34,7 @@ def get_cherrypy_config():
 
 class Web:
     @staticmethod
-    def start():
+    def start(root: object):
         logger.info('Starting web server...')
 
         cherrypy.config.update({
@@ -60,7 +52,7 @@ class Web:
 
         cherrypy.engine.subscribe('start', Config.database.cleanup)
         logger.debug('Web engine subscribed.')
-        cherrypy.tree.mount(Root(), '/', get_cherrypy_config())
+        cherrypy.tree.mount(root, '/', get_cherrypy_config())
         logger.debug('Web tree mounted.')
         cherrypy.engine.start()
         logger.info('Web server started.')
