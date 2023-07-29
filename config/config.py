@@ -49,9 +49,7 @@ class Config:
         Config.database_migrations_path = getenv('DATABASE_MIGRATIONS_PATH')
         Config.ldap_descriptor = LDAP(LDAPConfig.from_env())
         Config.jinja_env = jinja2.Environment(loader=jinja2.PackageLoader('app.web', 'www'))
-
-        if Config.production:
-            Config.web_proxy_base = getenv('WEB_PROXY_BASE')
+        Config.web_proxy_base = getenv('WEB_PROXY_BASE') if Config.production else None
 
         if not os.path.exists(Config.log_directory):
             os.mkdir(Config.log_directory)
