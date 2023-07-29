@@ -57,7 +57,7 @@ class Config:
             os.mkdir(Config.log_directory)
 
     @staticmethod
-    def setup_app_logger():
+    def setup_app_logger(log_file: Optional[str] = None):
         logger = logging.getLogger('app')
         logger.setLevel(Config.log_level)
         formatter = logging.Formatter(
@@ -70,7 +70,7 @@ class Config:
         logger.addHandler(console_handler)
 
         # create a FileHandler to log to a file
-        file_handler = logging.FileHandler(os.path.join(Config.log_directory, Config.log_file))
+        file_handler = logging.FileHandler(os.path.join(Config.log_directory, log_file or Config.log_file))
         file_handler.setLevel(Config.log_level)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
