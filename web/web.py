@@ -35,7 +35,12 @@ class Web:
     @staticmethod
     def start():
         init_hooks()
-        from app.web.controllers import Root  # pylint: disable=import-outside-toplevel # hooks must be initialized first
+
+        # hooks must be initialized before importing controllers
+        # pylint: disable=import-outside-toplevel
+        from app.web.controllers import Root
+
+        # pylint: enable=import-outside-toplevel
 
         logger.info('Starting web server...')
 

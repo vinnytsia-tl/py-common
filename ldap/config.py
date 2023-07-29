@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 from os import getenv as getenv_optional
+from typing import Optional
 
 from app.common.config.utils import getenv, getenv_typed
 
