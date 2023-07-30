@@ -45,7 +45,7 @@ class LDAP():
         return User(entry.userPrincipalName.value, entry.displayName.value, entry.distinguishedName.value)
 
     def set_password(self, username: str, new_password: str) -> bool:
-        conn = self.__get_connection()
+        conn = self.__get_connection(read_only=False)
         user = self.get_user(username)
         return conn.extend.microsoft.modify_password(user.distinguished_name, new_password)
 
