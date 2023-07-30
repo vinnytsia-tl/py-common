@@ -36,7 +36,7 @@ class Config:
     def load():
         Config.__load_dotenv()
 
-        Config.production = getenv('AUTOMATION_ENVIRONMENT', 'development') == 'production'
+        Config.production = getenv('PY_ENVIRONMENT', 'development') == 'production'
         Config.log_directory = getenv('LOG_DIR')
         Config.log_file = getenv('LOG_FILE')
         Config.log_level = getenv('LOG_LEVEL', 'DEBUG')
