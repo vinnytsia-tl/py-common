@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 import time
+from typing import Any
+from urllib.parse import urlencode
 
 import cherrypy
 
@@ -37,3 +39,7 @@ def save_session(username: str):
         cursor.execute(exe_str, (username, cherrypy.session.id))
         exe_str = "INSERT INTO sessions(session_id, username, agent, time) values(?, ?, ?, ?);"
         cursor.execute(exe_str, (cherrypy.session.id, username, agent, session_time))
+
+
+def to_query_string(args: dict[str, Any]) -> str:
+    return urlencode({k: v for k, v in args.items() if v is not None and v != ''})
